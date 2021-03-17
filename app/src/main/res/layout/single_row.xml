@@ -4,8 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:backgroundTint="#ffffe8">
+    android:backgroundTint="#ffffe8"
+    android:background="@color/cardview_dark_background">
 
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:id="@+id/imgView"/>
 
     <TextView
         android:id="@+id/first"

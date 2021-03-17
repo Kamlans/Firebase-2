@@ -1,5 +1,10 @@
 package com.example.firebase_2;
 
+import android.net.Uri;
+import android.widget.ImageView;
+
+import com.google.firebase.firestore.FieldPath;
+
 public class Model {
 
     public Model() {
@@ -7,12 +12,26 @@ public class Model {
 
     String ff , sf;
 
-    public Model(String ff, String sf) {
+    String  Img;
+
+    public Model(String ff, String sf , String img) {
         this.ff = ff;
         this.sf = sf;
+        img = Img;
     }
 
-    public void setall( String ff , String sf){
+
+
+
+    public String getImg() {
+        return Img;
+    }
+
+    public void setImg(String img) {
+        Img = img;
+    }
+
+    public void setall(String ff , String sf){
         this.ff = ff;
         this.sf =sf;
     }

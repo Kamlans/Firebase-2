@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +45,13 @@ private Model modellink;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent( getApplicationContext() , MainActivity2.class));
+            }
+        });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Create a new user with a first and last name
@@ -198,18 +207,16 @@ private Model modellink;
         recyclerView.setLayoutManager( new LinearLayoutManager(this));
        // recyclerView.setAdapter( new recAdapter(MainActivity.this, arrayList));
 
-        arrayList.add( new Model("kamlans" ,"Jugal"));
+        arrayList.add( new Model("kamlans" ,"Jugal", "https://firebasestorage.googleapis.com/v0/b/kamlans.appspot.com/o/dp%2Fhospital.png?alt=media&token=c3172d79-fdc2-48fc-aac9-96a64f48c4ad"));
 
-        arrayList.add( new Model(x , y));
-        arrayList.add( new Model(firstname , lastname));
+        arrayList.add( new Model(x , y , "https://firebasestorage.googleapis.com/v0/b/kamlans.appspot.com/o/dp%2Fhospital.png?alt=media&token=c3172d79-fdc2-48fc-aac9-96a64f48c4ad"));
+        arrayList.add( new Model(firstname , lastname , "https://firebasestorage.googleapis.com/v0/b/kamlans.appspot.com/o/dp%2Fhospital.png?alt=media&token=c3172d79-fdc2-48fc-aac9-96a64f48c4ad"));
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot d : task.getResult()){
-                    Model model = new Model(d.getString("first") , d.getString("last"));
-                    Model line = new Model("-----------" , "---------");
-                    Model objModel = d.toObject(Model.class);
-                    arrayList.add(line);
+                    Model model = new Model(d.getString("first") , d.getString("last") , d.getString("img"));
+
                     arrayList.add(model);
 
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -217,23 +224,15 @@ private Model modellink;
                         public void onSuccess(Uri uri) {
                             Log.e("Tuts+", "uri: " + uri.toString());
                             //Handle whatever you're going to do with the URL here
-                            Intent intent = new Intent(MainActivity.this , MainActivity.class);
-                            intent.putExtra("url" , uri.toString());
-                            Log.d(TAG, "onSuccess: "+arrayList.toString());
+
+                            Model m = new Model(d.getString("first") , d.getString("last") , d.getString("url"));
+
+
+                            arrayList.add(m);
+
                             URL = uri.toString();
-                            Log.d("petu", "onComplete: with url"+URL);
 
-                             modellink = new Model(d.getString("first") , URL);
 
-                            Log.d( "qwerty", "onSuccess: with link "+modellink.getFf()+ "    " +modellink.getSf());
-                            try{
-                                arrayList.add(modellink);
-                                Log.d("qwerty", "onSuccess: ");
-                                Log.d("mom", "onCreate: "+ arrayList.get(2).getSf());
-
-                            }catch (Exception exception){
-                                Log.d("qwerty", "exception: "+ exception.getMessage());
-                            }
 
 
                         }
