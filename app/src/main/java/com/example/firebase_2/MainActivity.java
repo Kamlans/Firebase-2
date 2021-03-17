@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Model> arrayList = new ArrayList<>();
     public String firstname , lastname;
     Map<String , String> maplist = new HashMap<>();
-
+    private  String URL;
+private Model modellink;
 
 
 
@@ -215,10 +217,25 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             Log.e("Tuts+", "uri: " + uri.toString());
                             //Handle whatever you're going to do with the URL here
-
-                            Model xyx = new Model("link" , uri.toString());
-                            arrayList.add(xyx);
+                            Intent intent = new Intent(MainActivity.this , MainActivity.class);
+                            intent.putExtra("url" , uri.toString());
                             Log.d(TAG, "onSuccess: "+arrayList.toString());
+                            URL = uri.toString();
+                            Log.d("petu", "onComplete: with url"+URL);
+
+                             modellink = new Model(d.getString("first") , URL);
+
+                            Log.d( "qwerty", "onSuccess: with link "+modellink.getFf()+ "    " +modellink.getSf());
+                            try{
+                                arrayList.add(modellink);
+                                Log.d("qwerty", "onSuccess: ");
+                                Log.d("mom", "onCreate: "+ arrayList.get(2).getSf());
+
+                            }catch (Exception exception){
+                                Log.d("qwerty", "exception: "+ exception.getMessage());
+                            }
+
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -227,6 +244,25 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
+
+                    //Log.d("qwerty", "onComplete: "+ "    "+arrayList.size()+ "      "+modellink.getFf() + "    " +modellink.getSf() );
+
+
+                    String newString;
+                    if (savedInstanceState == null) {
+                        Bundle extras = getIntent().getExtras();
+                        if(extras == null) {
+                            newString= null;
+                        } else {
+                            newString= extras.getString("url");
+                        }
+                    } else {
+                        newString= (String) savedInstanceState.getSerializable("STRING_I_NEED");
+                    }
+
+                    Log.d("petu", "onComplete: "+newString);
+                    Log.d("petu", "onComplete: "+URL);
+                    Log.d("petu", "onComplete: ");
 
                 }
 
@@ -246,7 +282,10 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d(TAG, "onCreate: "+arrayList.toString());
 
         for (int i = 0; i <arrayList.size(); i++) {
-            Log.d(TAG, "onCreate: "+ arrayList.get(i).getFf());
+//            Log.d("mom", "onCreate: "+ arrayList.get(i).getSf());
+//            Log.d("mom", "onCreate: "+ arrayList.size());
+            Log.d("mom", "onCreate: "+ arrayList.get(2).getSf());
+
         }
     }
 }
